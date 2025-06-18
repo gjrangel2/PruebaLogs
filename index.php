@@ -1,8 +1,115 @@
-<html>
-  <head>
-    <title>PHP Test</title>
-  </head>
-  <body>
-    <?php echo '<p>Hello World</p>'; ?> 
+<?php
+// Nombre del archivo .log
+$logFile = 'reporteWhatsapp.log';
 
+// Leer todo el contenido del archivo, línea por línea
+$lines = file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+// Array para guardar los registros procesados
+$logs = [];
+
+// Procesar cada línea del archivo
+foreach ($lines as $line) {
+    // Dividir cada línea por el separador "|"
+    $parts = explode('|', $line);
+
+    // Validar que la línea tenga al menos 3 columnas
+    if (count($parts) >= 3) {
+        // Organizar la información en un array asociativo
+        $logs[] = [
+            'fecha' => $parts[0],                 // Fecha y hora
+            'telefono' => $parts[1],               // Telefono de usuario
+            'tipo' => (strpos($parts[1], 'ERRO') !== false || strpos($line, 'ERRO') !== false) ? 'Error' : 'OK', // Tipo de registro
+            'mensaje' => implode(' | ', array_slice($parts, 2)) // Mensaje completo (por si tiene más de 3 columnas)
+        ];
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte de Logs</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-color: #fff;
+        }
+        thead {
+            background-color: #4CAF50;
+            color: white;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .error {
+            background-color: #ffebeb !important;
+        }
+        .tag {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            color: white;
+        }
+        .tag-info {
+            background-color: #2196F3;
+        }
+        .tag-error {
+            background-color: #f44336;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Reporte de Log de WhatsApp</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Fecha y Hora</th>
+            <th>Teléfono</th>
+            <th>Tipo</th>
+            <th>Detalle</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($logs as $log): ?>
+            <tr class="<?php echo ($log['tipo'] == 'Error') ? 'error' : ''; ?>">
+                <td><?php echo $log['fecha']; ?></td>
+                <td><?php echo $log['telefono']; ?></td>
+                <td>
+                    <?php if ($log['tipo'] == 'Error'): ?>
+                        <span class="tag tag-error">Error</span>
+                    <?php else: ?>
+                        <span class="tag tag-info">Info</span>
+                    <?php endif; ?>
+                </td>
+                <td><?php echo $log['mensaje']; ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+</body>
 </html>
