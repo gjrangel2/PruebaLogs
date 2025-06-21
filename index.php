@@ -18,9 +18,9 @@ foreach ($lines as $line) {
         // Organizar la información en un array asociativo
         $logs[] = [
             'fecha' => $parts[0],                 // Fecha y hora
-            'telefono' => $parts[1],               // Telefono de usuario
+            'telefono' => (strpos($line, 'ERRO') !== false) ? $parts[2] : $parts[1],//$parts[1],               // Telefono de usuario
             'tipo' => (strpos($parts[1], 'ERRO') !== false || strpos($line, 'ERRO') !== false) ? 'Error' : 'OK', // Tipo de registro
-            'mensaje' => implode(' | ', array_slice($parts, 2)) // Mensaje completo (por si tiene más de 3 columnas)
+            'detalle' => (strpos($line, 'ERRO') !== false) ? implode(' | ', array_slice($parts, 3)) : implode(' | ', array_slice($parts, 2)),//implode(' | ', array_slice($parts, 0)) // Mensaje completo (por si tiene más de 3 columnas)
         ];
     }
 }
@@ -76,7 +76,7 @@ foreach ($lines as $line) {
             background-color: #2196F3;
         }
         .tag-error {
-            background-color: #f44336;
+            background-color: yellow;
         }
     </style>
 </head>
@@ -102,10 +102,10 @@ foreach ($lines as $line) {
                     <?php if ($log['tipo'] == 'Error'): ?>
                         <span class="tag tag-error">Error</span>
                     <?php else: ?>
-                        <span class="tag tag-info">Info</span>
+                        <span class="tag tag-info">OK</span>
                     <?php endif; ?>
                 </td>
-                <td><?php echo $log['mensaje']; ?></td>
+                <td><?php echo $log['detalle']; ?></td>
             </tr>
         <?php endforeach; ?>
     </tbody>
