@@ -1,0 +1,20 @@
+2021-09-20 14:02:20.120|57304xxxxxxx|CariWorker 9 processing event 471121445 
+2021-09-20 14:02:20.120|57304xxxxxxx| Creating cache entry for bot '9999'
+2021-09-20 14:02:20.266|57304xxxxxxx|  projectIdBot 9999
+2021-09-20 14:02:20.267|57304xxxxxxx| arrayDbVars =Array
+2021-09-20 14:02:20.267|57304xxxxxxx| Done creating cache entry for bot 9999
+2021-09-20 14:02:20.268|57304xxxxxxx| Returning cache entry for 'BOT_KEY' and bot 9999
+2021-09-20 14:02:20.269|57304xxxxxxx| Found configuration 242 for bot 9999 and channel 
+2021-09-20 14:02:20.269|57304xxxxxxx| Not using INCE cause of force processing
+2021-09-20 14:02:20.275|57304xxxxxxx| Campaign found for Envío rápido and 157
+2021-09-20 14:02:20.275|57304xxxxxxx| Sending HSMs for numbers ( [0] => 57304xxxxxxx) and params ( [0] => Prueba Cari)
+2021-09-20 14:02:20.276|57304xxxxxxx| Entering createSessions, 1
+2021-09-20 14:02:20.958|57304xxxxxxx| Succesfully got contact info {"contacts":[{"input":"+57304xxxxxxx","status":"invalid"}],"meta":{"api_status":"stable","version":"2.35.4"}}
+2021-09-20 14:02:20.962|57304xxxxxxx| Saved campaign report with id 23293464
+2021-09-20 14:02:20.962|57304xxxxxxx| Building HSMs for numbers ( [0] =>  ( [to] => 57304xxxxxxx )) and params ( [0] => Prueba Cari)
+2021-09-20 14:02:20.962|57304xxxxxxx| Param count is 3, sending parameters ( [0] => Prueba Cari)
+2021-09-20 14:02:20.962|57304xxxxxxx| Sending 1 to BSP em v1/messages ...
+2021-09-20 14:02:21.420|ERRO|57304xxxxxxx| id 1 got error, code is 400 and response is {"meta":{"api_status":"stable","version":"2.35.4"},"errors":[{"code":1013,"title":"User is not valid","details":"not a WhatsApp user"}]}!
+2021-09-20 14:02:21.421|57304xxxxxxx| CariWorker 9 done processing event 471121445…
+2021-09-20 14:02:21.425|57304xxxxxxx| Done processing on worker 9…
+2021-09-20 14:02:22.114|57304xxxxxxx| Received event 471121380 for processing on worker 9... 
