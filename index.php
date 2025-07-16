@@ -2,25 +2,27 @@
 // Nombre del archivo .log
 $logFile = 'reporteWhatsapp.log';
 
-// Leer todo el contenido del archivo, línea por línea
+
 $lines = file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
-// Array para guardar los registros procesados
+
 $logs = [];
 
-// Procesar cada línea del archivo
+
 foreach ($lines as $line) {
-    // Dividir cada línea por el separador "|"
+   
     $parts = explode('|', $line);
 
     // Validar que la línea tenga al menos 3 columnas
     if (count($parts) >= 3) {
         // Organizar la información en un array asociativo
         $logs[] = [
-            'fecha' => $parts[0],                 // Fecha y hora
-            'telefono' => (strpos($line, 'ERRO') !== false) ? $parts[2] : $parts[1],//$parts[1],               // Telefono de usuario
-            'tipo' => (strpos($parts[1], 'ERRO') !== false || strpos($line, 'ERRO') !== false) ? 'Error' : 'OK', // Tipo de registro
-            'detalle' => (strpos($line, 'ERRO') !== false) ? implode(' | ', array_slice($parts, 3)) : implode(' | ', array_slice($parts, 2)),//implode(' | ', array_slice($parts, 0)) // Mensaje completo (por si tiene más de 3 columnas)
+            'fecha' => $parts[0],                 
+            'telefono' => (strpos($line, 'ERRO') == true) ?                        $parts[2] : $parts[1],
+            'tipo' => (strpos($parts[1], 'ERRO') == true ||                        strpos($line, 'ERRO') == true) ? 'Error' : 'OK', 
+            'detalle' => (strpos($line, 'ERRO') == true) ?                         implode(' | ', array_slice($parts, 3)) : implode('                 | ', array_slice($parts, 2)),
+            'adicional' => (strpos($line, 'ERRO') !== false ?
+                implode(' | ', array_slice($parts, 0,2)):implode('             | ', array_slice($parts, 2)) )
         ];
     }
 }
@@ -48,7 +50,7 @@ foreach ($lines as $line) {
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            background-color: #fff;
+            background-color: #white;
         }
         thead {
             background-color: #4CAF50;
@@ -73,7 +75,7 @@ foreach ($lines as $line) {
             color: white;
         }
         .tag-info {
-            background-color: #2196F3;
+            background-color: darkblue;
         }
         .tag-error {
             background-color: yellow;
@@ -91,6 +93,7 @@ foreach ($lines as $line) {
             <th>Teléfono</th>
             <th>Tipo</th>
             <th>Detalle</th>
+            <th>Adicional</th>
         </tr>
     </thead>
     <tbody>
@@ -106,6 +109,7 @@ foreach ($lines as $line) {
                     <?php endif; ?>
                 </td>
                 <td><?php echo $log['detalle']; ?></td>
+                <td><?php echo $log['adicional']; ?></td>
             </tr>
         <?php endforeach; ?>
     </tbody>
